@@ -1,13 +1,11 @@
 Summary: Web server log analysis program
 Name: awffull
 Version: 3.10.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
-Group: Applications/Internet
 URL: http://www.stedee.id.au/awffull
 
 Source: http://www.stedee.id.au/files/awffull-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires: zlib-devel, libpng-devel, db4-devel, gd-devel, pcre-devel
 
@@ -24,21 +22,19 @@ history, resizable graphs, and a few more pie charts.
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
 %makeinstall
 %find_lang %{name}
 
-%clean
-%{__rm} -rf %{buildroot}
-
 %files -f %{name}.lang
-%defattr(-, root, root, 0755)
 %doc ChangeLog COPYING INSTALL README TODO
 %doc %{_mandir}/man1/awffull.1*
 %doc %{_mandir}/man5/awffull.conf.5*
 %{_bindir}/awffull
 
 %changelog
+* Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 3.10.2-3
+- Modernize spec for AlmaLinux 10: remove BuildRoot, %%clean, %%defattr, Group tag
+
 * Tue Oct 03 2017 Nux <rpm@li.nux.ro> - 3.10.2-2
 - build for EL7
 
