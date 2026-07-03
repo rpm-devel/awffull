@@ -2,10 +2,11 @@ Summary: Web server log analysis program
 Name: awffull
 Version: 3.10.2
 Release: 3%{?dist}
-License: GPL
+License: GPL-2.0-or-later
 URL: http://www.stedee.id.au/awffull
-
-Source: http://www.stedee.id.au/files/awffull-%{version}.tar.gz
+ExclusiveArch: x86_64 aarch64
+# Upstream is abandoned; original site is dead; no surviving archive found
+Source0: http://www.stedee.id.au/files/awffull-%{version}.tar.gz
 
 BuildRequires: zlib-devel, libpng-devel, db4-devel, gd-devel, pcre-devel
 
@@ -15,23 +16,29 @@ adds a number of new features and improvements, such as extended frontpage
 history, resizable graphs, and a few more pie charts.
 
 %prep
-%setup
+%autosetup -p1
 
 %build
 %configure
-%{__make} %{?_smp_mflags}
+%make_build
 
 %install
-%makeinstall
+%make_install
 %find_lang %{name}
 
 %files -f %{name}.lang
-%doc ChangeLog COPYING INSTALL README TODO
+%license COPYING
+%doc ChangeLog INSTALL README TODO
 %doc %{_mandir}/man1/awffull.1*
 %doc %{_mandir}/man5/awffull.conf.5*
 %{_bindir}/awffull
 
 %changelog
+* Thu Jul 03 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 3.10.2-3
+- Rename Source: to Source0:; add comment noting upstream is dead/no archive
+- GPL-2.0-or-later SPDX; ExclusiveArch: x86_64 aarch64
+- %%autosetup -p1; %%make_build; %%make_install; %%license
+
 * Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 3.10.2-3
 - Modernize spec for AlmaLinux 10: remove BuildRoot, %%clean, %%defattr, Group tag
 
