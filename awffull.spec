@@ -5,10 +5,19 @@ Release: 3%{?dist}
 License: GPL-2.0-or-later
 URL: http://www.stedee.id.au/awffull
 ExclusiveArch: x86_64 aarch64
+
+%if 0%{?suse_version}
+%global libpng_devel_pkg libpng16-devel
+%global db_devel_pkg libdb-4_8-devel
+%else
+%global libpng_devel_pkg libpng-devel
+%global db_devel_pkg db4-devel
+%endif
+
 # Upstream is abandoned; original site is dead; no surviving archive found
 Source0: http://www.stedee.id.au/files/awffull-%{version}.tar.gz
 
-BuildRequires: zlib-devel, libpng-devel, db4-devel, gd-devel, pcre-devel
+BuildRequires: zlib-devel, %{libpng_devel_pkg}, %{db_devel_pkg}, gd-devel, pcre-devel
 
 %description
 AWFFull is a Web server log analysis program, forked from Webalizer. It
@@ -34,6 +43,13 @@ history, resizable graphs, and a few more pie charts.
 %{_bindir}/awffull
 
 %changelog
+* Sat Jul 05 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 3.10.2-3
+- Multi-distro pass: guard libpng-devel/db4-devel via %%global for openSUSE/SLES
+  (libpng16-devel, libdb-4_8-devel); zlib-devel, gd-devel, pcre-devel unchanged
+  (same name across distros); pcre-devel left unguarded on SUSE since PCRE1
+  is not packaged there and swapping to pcre2-devel would be an API change,
+  not a naming guard
+
 * Thu Jul 03 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 3.10.2-3
 - Rename Source: to Source0:; add comment noting upstream is dead/no archive
 - GPL-2.0-or-later SPDX; ExclusiveArch: x86_64 aarch64
